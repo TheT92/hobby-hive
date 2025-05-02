@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+}
+body * {
+    box-sizing: border-box;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
