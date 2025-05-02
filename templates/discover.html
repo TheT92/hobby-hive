@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HobbyHive - Discover</title>
+    <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
+    <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
+</head>
+
+<body style="font-family: 'Segoe UI', sans-serif; background-color: #f5f5f5; padding: 20px;">
+
+    <h2 style="color: #333;">Discover</h2>
+
+    <!-- Search -->
+    <input type="text" placeholder="Search hobbies, events..." style="width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #ccc; margin-bottom: 20px;">
+
+    <!-- Filter Buttons -->
+    <div style="margin-bottom: 20px;">
+        <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: orange; color: white;">All</button>
+        <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Sports</button>
+        <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Arts</button>
+        <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Music</button>
+    </div>
+
+    <!-- Upcoming Events -->
+    <h4 style="margin-bottom: 15px;">Upcoming Events</h4>
+
+    <div style="background-color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 0 8px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong style="font-size: 16px;">🎨 Art Studio - Painting Workshop</strong>
+                <p style="margin: 5px 0; color: #555;">Apr 12 · 2:00 PM</p>
+            </div>
+            <a href="event-details.html?id=0" style="padding: 8px 16px; background-color: orange; color: white; text-decoration: none; border-radius: 20px;">Join</a>
+        </div>
+    </div>
+
+    <div style="background-color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 0 8px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong style="font-size: 16px;">🥾 Trailblazers - Weekend Hiking</strong>
+                <p style="margin: 5px 0; color: #555;">Apr 14 · 9:00 AM</p>
+            </div>
+            <a href="event-details.html?id=1" style="padding: 8px 16px; background-color: orange; color: white; text-decoration: none; border-radius: 20px;">Join</a>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
