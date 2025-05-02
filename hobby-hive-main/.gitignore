@@ -1,0 +1,2 @@
+git rm --cached static/firebase-login.js
+static/firebase-login.js
