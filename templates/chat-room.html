@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HobbyHive - Group Chat</title>
+</head>
+<!-- HI Chats-->
+<body style="font-family: 'Segoe UI', sans-serif; background: #fff; margin: 0; padding: 20px;">
+
+    <h2 style="margin-bottom: 10px;">Art Studio Group</h2>
+    <p style="color: gray; margin-top: 0;">12 members</p>
+
+    <div id="chatBox" style="border: 1px solid #eee; border-radius: 15px; padding: 15px; height: 300px; overflow-y: auto; background: #f9f9f9;">
+        <div style="margin-bottom: 10px;">
+            <strong>Sarah</strong> <small style="color: gray;">10:23 AM</small><br>
+            <span>Hi everyone!</span>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <strong>Mike</strong> <small style="color: gray;">10:25 AM</small><br>
+            <span>Anyone bringing extra brushes?</span>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <strong>You</strong> <small style="color: gray;">10:30 AM</small><br>
+            <span>I can bring</span>
+        </div>
+    </div>
+
+    <form onsubmit="sendMessage(event)" style="margin-top: 15px; display: flex;">
+        <input id="messageInput" type="text" placeholder="Type a message..." style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px;">
+        <button type="submit" style="background: rgb(68, 66, 62); color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 20px; cursor: pointer;">Send</button>
+    </form>
+
+    <script>
+        function sendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById("messageInput");
+            const chatBox = document.getElementById("chatBox");
+            if (input.value.trim()) {
+                const messageHTML = `
+                    <div style="margin-bottom: 10px;">
+                        <strong>You</strong> <small style="color: gray;">Now</small><br>
+                        <span>${input.value}</span>
+                    </div>`;
+                chatBox.innerHTML += messageHTML;
+                input.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+    </script>
+
+</body>
+</html>
