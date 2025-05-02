@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Events - HobbyHive</title>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8;">
+  <h1 style="text-align: center;">Events</h1>
+  <a href="event-form.html" style="display: block; margin-bottom: 20px; text-align: center;">+ Create New Event</a>
+
+  <div id="eventsContainer"></div>
+
+  <script>
+    const container = document.getElementById("eventsContainer");
+    const events = JSON.parse(localStorage.getItem("events") || "[]");
+
+    if (events.length === 0) {
+      container.innerHTML = "<p>No events found.</p>";
+    } else {
+      events.forEach((event, index) => {
+        const eventCard = document.createElement("div");
+        eventCard.style = "background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);";
+        eventCard.innerHTML = `
+          <a href="event-details.html?id=${index}" style="text-decoration: none; color: inherit;">
+            <h3 style="margin: 0;">${event.title}</h3>
+            <p style="margin: 5px 0; color: #555;">${new Date(event.time).toLocaleString()} · ${event.location}</p>
+          </a>
+        `;
+        container.appendChild(eventCard);
+      });
+    }
+  </script>
+</body>
+</html>
