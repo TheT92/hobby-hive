@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Event - HobbyHive</title>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8;">
+
+  <h2>Create New Event</h2>
+
+  <form id="eventForm">
+    <input type="text" placeholder="Event Title" id="title" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="text" placeholder="Location" id="location" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="datetime-local" id="time" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="text" placeholder="Organizer" id="organizer" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <textarea placeholder="Description" id="description" required style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea><br>
+    <button type="submit" style="padding: 10px 20px; background-color: #ffa726; border: none; color: white; border-radius: 6px;">Create Event</button>
+  </form>
+
+  <script>
+    document.getElementById("eventForm").onsubmit = function (e) {
+      e.preventDefault();
+      const event = {
+        title: document.getElementById("title").value,
+        location: document.getElementById("location").value,
+        time: document.getElementById("time").value,
+        organizer: document.getElementById("organizer").value,
+        description: document.getElementById("description").value,
+      };
+      const events = JSON.parse(localStorage.getItem("events") || "[]");
+      events.push(event);
+      localStorage.setItem("events", JSON.stringify(events));
+      window.location.href = "events.html";
+    };
+  </script>
+</body>
+</html>
