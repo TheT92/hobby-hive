@@ -43,11 +43,30 @@ def validateFirebaseToken(id_token):
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse('index.html', { 'request': request })
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if not user_token:
+        return RedirectResponse('/login')
+    
+    return templates.TemplateResponse('index.html', { 'request': request, 'user_token': user_token, 'error_message': None })
+
+@app.get("/login", response_class=HTMLResponse)
+async def login(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if user_token:
+        return RedirectResponse('/')
+    return templates.TemplateResponse('sign-in.html', {'request': request, 'error_message': None})
+
 
 @app.get("/signUp", response_class=HTMLResponse)
-async def root(request: Request):
-    return templates.TemplateResponse('sign-up.html', { 'request': request })
+async def signUp(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if user_token:
+        return RedirectResponse('/')
+    return templates.TemplateResponse('sign-up.html', {'request': request, 'error_message': None})
+
 
 @app.get("/signIn", response_class=HTMLResponse)
 async def root(request: Request):
@@ -59,6 +78,10 @@ async def root(request: Request):
 
 @app.get("/updatePassword", response_class=HTMLResponse)
 async def root(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if not user_token:
+        return RedirectResponse('/login')
     return templates.TemplateResponse('update-password.html', { 'request': request })
 
 @app.get("/chats", response_class=HTMLResponse)
@@ -70,7 +93,11 @@ async def root(request: Request, chatId: str):
     return templates.TemplateResponse('chat.html', { 'request': request })
 
 @app.get("/userCenter", response_class=HTMLResponse)
-async def root(request: Request):
+async def userCenter(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if not user_token:
+        return RedirectResponse('/login')
     return templates.TemplateResponse('user-center.html', { 'request': request })
 
 @app.get("/events", response_class=HTMLResponse)
@@ -90,7 +117,7 @@ async def root(request: Request, eventId: str):
     return templates.TemplateResponse('event-detail.html', { 'request': request })
 
 @app.get("/userHobbies", response_class=HTMLResponse)
-async def root(request: Request):
+async def userHobbies(request: Request):
     return templates.TemplateResponse('user-hobbies.html', { 'request': request })
 
 # <---------------------------------- UI End ---------------------------------->

@@ -5,26 +5,44 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 
 const firebaseConfig = {
     // use your own config here but don't upload
+    apiKey: "AIzaSyC8Q0tvqK__Rx5pAaCP1VCc4kT7KUWnexA",
+    authDomain: "assignment1-452515.firebaseapp.com",
+    projectId: "assignment1-452515",
+    storageBucket: "assignment1-452515.firebasestorage.app",
+    messagingSenderId: "542302291196",
+    appId: "1:542302291196:web:5ce39fd33aad3c2b8f0379"
 };
 
 window.addEventListener("load", function () {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    // updateUI(document.cookie);
     const signUp = document.getElementById("sign-up");
     !!signUp && signUp.addEventListener("click", function () {
         const email = document.getElementById("email").value;
+        const name = document.getElementById("name").value;
         const password = document.getElementById("password").value;
-        if(!email.trim() || !password.trim()) {
-            return window.alert("please enter email and password")
+        if (!name.trim() || !email.trim() || !password.trim()) {
+            return window.alert("Please enter name, email and password")
         }
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
                 user.getIdToken().then((token) => {
-                    window.alert("account ceate success!")
-                    document.cookie = "token=" + token + ";path=/;SameSite=Strict";
-                    window.location = "/";
+                    fetch("/signUp", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            uid: user.uid,
+                            'name': email,
+                            'profile_name': name || '/'
+                        })
+                    }).then((res) => {
+                        window.alert("account ceate success!")
+                        document.cookie = "token=" + token + ";path=/;SameSite=Strict";
+                        window.location = "/";
+                    })
                 });
             })
             .catch((error) => {
@@ -37,7 +55,7 @@ window.addEventListener("load", function () {
     !!login && login.addEventListener('click', function () {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        if(!email.trim() || !password.trim()) {
+        if (!email.trim() || !password.trim()) {
             return window.alert("please enter email and password")
         }
         signInWithEmailAndPassword(auth, email, password)
@@ -48,7 +66,7 @@ window.addEventListener("load", function () {
                 user.getIdToken().then((token) => {
                     document.cookie = "token=" + token + ";path=/;SameSite=Strict";
                     console.log(window.location.pathname)
-                    if(window.location.pathname == '/') {
+                    if (window.location.pathname == '/') {
                         window.location.reload();
                     } else {
                         window.location = "/";
@@ -57,7 +75,7 @@ window.addEventListener("load", function () {
             })
             .catch((error) => {
                 console.log(error.code + error.message);
-                if(error.code == "auth/invalid-login-credentials") {
+                if (error.code == "auth/invalid-login-credentials") {
                     window.alert("Wrong email or password")
                 } else {
                     window.alert("Error, please try later")
@@ -66,27 +84,14 @@ window.addEventListener("load", function () {
     });
 });
 
-function updateUI(cookie) {
-    var token = parseCookieToken(cookie);
-    const loginBox = document.getElementById("form-box");
-    const logoutBox = document.getElementById("sign-out");
-    if (token.length > 0) {
-        !!loginBox && (loginBox.hidden = true);
-        !!logoutBox && (logoutBox.hidden = false);
-    } else {
-        !!loginBox && (loginBox.hidden = false);
-        !!logoutBox && (logoutBox.hidden = true);
-    }
-};
-
-function parseCookieToken(cookie) {
-    var strings = cookie.split(';');
-    for (let i = 0; i < strings.length; i++) {
-        var temp = strings[i].split('=');
-        if (temp[0].trim() == "token") {
-            return temp[1];
-        }
-
-    }
-    return "";
-};
+window.handleLogout = function () {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    signOut(auth)
+        .then((output) => {
+            // remove the ID token for the user and force a redirect to /
+            alert("You have signed out")
+            document.cookie = "token=;path=/;SameSite=Strict";
+            window.location = "/";
+        });
+}
