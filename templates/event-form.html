@@ -2,14 +2,49 @@
 <html>
 
 <head>
-    <title>HobbyHive</title>
-    <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
-    <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
+  <title>HobbyHive</title>
+  <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
+  <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
 </head>
 
-<body id="index">
-    <h1>Create/Update event Page</h1>
-    <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
+<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8;">
+
+  <h2>Create New Event</h2>
+
+  <!-- creating event -->
+
+  <form id="eventForm">
+    <input type="text" placeholder="Event Title" id="title" required
+      style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="text" placeholder="Location" id="location" required
+      style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="datetime-local" id="time" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="text" placeholder="Organizer" id="organizer" required
+      style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <textarea placeholder="Description" id="description" required
+      style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea><br>
+    <button type="submit"
+      style="padding: 10px 20px; background-color: #ffa726; border: none; color: white; border-radius: 6px;">Create
+      Event</button>
+  </form>
+
+  <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
+  <script>
+    document.getElementById("eventForm").onsubmit = function (e) {
+      e.preventDefault();
+      const event = {
+        title: document.getElementById("title").value,
+        location: document.getElementById("location").value,
+        time: document.getElementById("time").value,
+        organizer: document.getElementById("organizer").value,
+        description: document.getElementById("description").value,
+      };
+      const events = JSON.parse(localStorage.getItem("events") || "[]");
+      events.push(event);
+      localStorage.setItem("events", JSON.stringify(events));
+      window.location.href = "events.html";
+    };
+  </script>
 </body>
 
 </html>
