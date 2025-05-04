@@ -86,6 +86,10 @@ async def root(request: Request):
 
 @app.get("/chats", response_class=HTMLResponse)
 async def root(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if not user_token:
+        return RedirectResponse('/login')
     return templates.TemplateResponse('chats.html', { 'request': request })
 
 @app.get("/chat/{chatId}", response_class=HTMLResponse)
