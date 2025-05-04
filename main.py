@@ -102,10 +102,18 @@ async def userCenter(request: Request):
 
 @app.get("/events", response_class=HTMLResponse)
 async def root(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if not user_token:
+        return RedirectResponse('/login')
     return templates.TemplateResponse('events.html', { 'request': request })
 
 @app.get("/createEvent", response_class=HTMLResponse)
 async def root(request: Request):
+    id_token = request.cookies.get("token")
+    user_token = validateFirebaseToken(id_token)
+    if not user_token:
+        return RedirectResponse('/login')
     return templates.TemplateResponse('event-form.html', { 'request': request })
 
 @app.get("/updateEvent/{eventId}", response_class=HTMLResponse)
@@ -114,6 +122,10 @@ async def root(request: Request, eventId: str):
 
 @app.get("/event/{eventId}", response_class=HTMLResponse)
 async def root(request: Request, eventId: str):
+    return templates.TemplateResponse('event-detail.html', { 'request': request })
+
+@app.get("/event", response_class=HTMLResponse)
+async def root(request: Request):
     return templates.TemplateResponse('event-detail.html', { 'request': request })
 
 @app.get("/userHobbies", response_class=HTMLResponse)

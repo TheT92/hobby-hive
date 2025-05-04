@@ -5,12 +5,6 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 
 const firebaseConfig = {
     // use your own config here but don't upload
-    apiKey: "AIzaSyC8Q0tvqK__Rx5pAaCP1VCc4kT7KUWnexA",
-    authDomain: "assignment1-452515.firebaseapp.com",
-    projectId: "assignment1-452515",
-    storageBucket: "assignment1-452515.firebasestorage.app",
-    messagingSenderId: "542302291196",
-    appId: "1:542302291196:web:5ce39fd33aad3c2b8f0379"
 };
 
 window.addEventListener("load", function () {
