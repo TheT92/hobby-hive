@@ -15,11 +15,31 @@
   <h3>Organizer</h3>
   <p id="organizer"></p>
 
+  <!-- Buttons -->
+  <div id="buttonGroup" style="margin-top: 20px;">
+    <button id="joinBtn" onclick="joinEvent()" style="padding: 10px 20px; background-color: #ffa726; color: white; border: none; border-radius: 8px; margin-right: 10px; cursor: pointer;">Join</button>
+    <button id="cancelBtn" onclick="cancelEvent()" style="padding: 10px 20px; background-color: #e57373; color: white; border: none; border-radius: 8px; cursor: pointer; display: none;">Cancel</button>
+  </div>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"));
     const events = JSON.parse(localStorage.getItem("events") || "[]");
     const event = events[id];
+
+    const joinBtn = document.getElementById("joinBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    function checkJoined() {
+      let joined = JSON.parse(localStorage.getItem("joinedEvents") || "[]");
+      if (joined.includes(id)) {
+        joinBtn.style.display = "none";
+        cancelBtn.style.display = "inline-block";
+      } else {
+        joinBtn.style.display = "inline-block";
+        cancelBtn.style.display = "none";
+      }
+    }
 
     if (event) {
       document.getElementById("title").textContent = event.title;
@@ -27,8 +47,26 @@
       document.getElementById("location").textContent = `📍 ${event.location}`;
       document.getElementById("description").textContent = event.description;
       document.getElementById("organizer").textContent = event.organizer;
+      checkJoined();
     } else {
       document.getElementById("title").textContent = "Event not found.";
+      document.getElementById("buttonGroup").style.display = "none";
+    }
+
+    function joinEvent() {
+      let joined = JSON.parse(localStorage.getItem("joinedEvents") || "[]");
+      if (!joined.includes(id)) {
+        joined.push(id);
+        localStorage.setItem("joinedEvents", JSON.stringify(joined));
+      }
+      checkJoined();
+    }
+
+    function cancelEvent() {
+      let joined = JSON.parse(localStorage.getItem("joinedEvents") || "[]");
+      joined = joined.filter(eventId => eventId !== id);
+      localStorage.setItem("joinedEvents", JSON.stringify(joined));
+      checkJoined();
     }
   </script>
 </body>
