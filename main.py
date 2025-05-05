@@ -102,7 +102,8 @@ async def userCenter(request: Request):
     user_token = validateFirebaseToken(id_token)
     if not user_token:
         return RedirectResponse('/login')
-    return templates.TemplateResponse('user-center.html', { 'request': request })
+    user = getUser(user_token).get()
+    return templates.TemplateResponse('user-center.html', { 'request': request, 'user_info': user })
 
 @app.get("/events", response_class=HTMLResponse)
 async def root(request: Request):
@@ -141,9 +142,21 @@ async def userHobbies(request: Request):
 
 # <--------------------------------- API Start --------------------------------->
 
-@app.post("/sign-up", response_class=RedirectResponse)
+@app.post("/signUp")
 async def signUpPost(request: Request):
-    return RedirectResponse('/signIn', status_code=status.HTTP_302_FOUND)
+    data = await request.json()
+    try:
+        uid = data["uid"]
+        name = data["name"]
+        profile_name = data["profile_name"]
+        
+        firestore_db.collection('users').document(uid).set({
+            'name': name,
+            'profile_name': profile_name
+        })
+        return {"status": "ok"}
+    except Exception as e:
+        return {"status": "fail"}
 
 @app.post("/sign-in", response_class=RedirectResponse)
 async def signInPost(request: Request):

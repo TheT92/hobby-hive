@@ -4,8 +4,80 @@
     <title>HobbyHive</title>
     <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
     <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f5f7;
+        color: #333;
+      }
+      header {
+        background-color: #ff9800;
+        padding: 20px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+      }
+      nav {
+        background-color: #fff3cd;
+        padding: 10px 0;
+        text-align: center;
+      }
+      nav a {
+        margin: 0 15px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+      }
+      nav a:hover {
+        color: #ff9900;
+      }
+      .hero {
+        padding: 60px 20px;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: #ff9900;
+      }
+      .hero p {
+        font-size: 18px;
+        color: #555;
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+      .hero a {
+        text-decoration: none;
+        background-color: #ff9900;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 24px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+      .hero a:hover {
+        background-color: #e68a00;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 14px;
+        color: #aaa;
+      }
+    </style>
 </head>
-<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8;">
+<body>
+  <header>Hobby Hive</header>
+  <nav>
+    <a href="/">Index</a>
+    <a href="/events">Events</a>
+    <a href="/chats">Chats</a>
+    <a href="/userCenter">Profile</a>
+    <a href="javascript:;" id="sign-out" onclick="handleLogout()">Sign Out</a>
+  </nav>
+  
   <h1 style="text-align: center;">Events</h1>
   <a href="/createEvent" style="display: block; margin-bottom: 20px; text-align: center;">+ Create New Event</a>
 
