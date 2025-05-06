@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HobbyHive</title>
   <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
-    <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
+  <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -15,55 +16,7 @@
       background-color: #f4f5f7;
       color: #333;
     }
-    header {
-      background-color: #ff9800;
-      padding: 20px;
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-      color: #333;
-    }
-    nav {
-      background-color: #fff3cd;
-      padding: 10px 0;
-      text-align: center;
-    }
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #333;
-      font-weight: 600;
-    }
-    nav a:hover {
-      color: #ff9900;
-    }
-    .hero {
-      padding: 60px 20px;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 36px;
-      margin-bottom: 10px;
-      color: #ff9900;
-    }
-    .hero p {
-      font-size: 18px;
-      color: #555;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-    .hero a {
-      text-decoration: none;
-      background-color: #ff9900;
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 24px;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
-    .hero a:hover {
-      background-color: #e68a00;
-    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -84,38 +37,26 @@
     <a href="/userCenter">Profile</a>
     <a href="javascript:;" id="sign-out" onclick="handleLogout()">Sign Out</a>
   </nav>
-  <!-- Search -->
-  <input type="text" placeholder="Search hobbies, events..." style="width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #ccc; margin-bottom: 20px;">
+  <div style="padding: 20px;">
+    <!-- Search -->
+    <input type="text" placeholder="Search hobbies, events..."
+      style="width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #ccc; margin-bottom: 20px;">
 
-  <!-- Filter Buttons -->
-  <div style="margin-bottom: 20px;">
-      <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: orange; color: white;">All</button>
-      <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Sports</button>
-      <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Arts</button>
-      <button style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Music</button>
-  </div>
+    <!-- Filter Buttons -->
+    <div style="margin-bottom: 20px;">
+      <button
+        style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: orange; color: white;">All</button>
+      <button
+        style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Sports</button>
+      <button
+        style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Arts</button>
+      <button
+        style="padding: 8px 16px; margin-right: 10px; border: none; border-radius: 20px; background-color: #ddd; color: #333;">Music</button>
+    </div>
 
-  <!-- Upcoming Events -->
-  <h4 style="margin-bottom: 15px;">Upcoming Events</h4>
-
-  <div style="background-color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 0 8px rgba(0,0,0,0.05);">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-              <strong style="font-size: 16px;">🎨 Art Studio - Painting Workshop</strong>
-              <p style="margin: 5px 0; color: #555;">Apr 12 · 2:00 PM</p>
-          </div>
-          <a href="event?id=0" style="padding: 8px 16px; background-color: orange; color: white; text-decoration: none; border-radius: 20px;">Join</a>
-      </div>
-  </div>
-
-  <div style="background-color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 0 8px rgba(0,0,0,0.05);">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-              <strong style="font-size: 16px;">🥾 Trailblazers - Weekend Hiking</strong>
-              <p style="margin: 5px 0; color: #555;">Apr 14 · 9:00 AM</p>
-          </div>
-          <a href="event?id=1" style="padding: 8px 16px; background-color: orange; color: white; text-decoration: none; border-radius: 20px;">Join</a>
-      </div>
+    <!-- Upcoming Events -->
+    <h4 style="margin-bottom: 15px;">Upcoming Events</h4>
+    <div id="eventsContainer"></div>
   </div>
 
   <footer>
@@ -123,7 +64,27 @@
   </footer>
 
   <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
-  <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}"></script>
+  <script src="{{ url_for('static', path='/app.js') }}"></script>
+  <script>
+    const container = document.getElementById("eventsContainer");
+    const events = JSON.parse(localStorage.getItem("events") || "[]");
+
+    if (events.length === 0) {
+      container.innerHTML = "<p>No events found.</p>";
+    } else {
+      events.forEach((event, index) => {
+        const eventCard = document.createElement("div");
+        eventCard.style = "background-color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 0 8px rgba(0,0,0,0.05);";
+        eventCard.innerHTML = `
+          <a href="/event?id=${index}" style="text-decoration: none; color: inherit;">
+            <h3 style="margin: 0;">${event.title}</h3>
+            <p style="margin: 5px 0; color: #555;">${new Date(event.time).toLocaleString()} · ${event.location}</p>
+          </a>
+        `;
+        container.appendChild(eventCard);
+      });
+    }
+  </script>
 </body>
 
-</html> 
+</html>

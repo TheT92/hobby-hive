@@ -2,37 +2,80 @@
 <html>
 
 <head>
-    <title>HobbyHive</title>
-    <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
-    <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
+  <title>HobbyHive</title>
+  <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
+  <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
 </head>
+
 <body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8;">
   <a href="/events" style="text-decoration: none; color: #ffa726;">← Back to Events</a>
 
   <h1 id="title" style="margin-top: 20px;">Loading...</h1>
   <p id="time"></p>
   <p id="location"></p>
+  <h3>Hobby</h3>
+  <p id="hobby"></p>
   <h3>Description</h3>
   <p id="description"></p>
   <h3>Organizer</h3>
   <p id="organizer"></p>
 
-  <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id"));
-    const events = JSON.parse(localStorage.getItem("events") || "[]");
-    const event = events[id];
+  <!-- Buttons -->
+  <div id="buttonGroup" style="margin-top: 20px;">
+    <button id="joinBtn" onclick="toggleJoin()"
+      style="padding: 10px 20px; background-color: #ffa726; color: white; border: none; border-radius: 8px; margin-right: 10px; cursor: pointer;">Join</button>
+  </div>
 
-    if (event) {
-      document.getElementById("title").textContent = event.title;
-      document.getElementById("time").textContent = `🕒 ${new Date(event.time).toLocaleString()}`;
-      document.getElementById("location").textContent = `📍 ${event.location}`;
-      document.getElementById("description").textContent = event.description;
-      document.getElementById("organizer").textContent = event.organizer;
-    } else {
-      document.getElementById("title").textContent = "Event not found.";
+  <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', path='/app.js') }}"></script>
+  <script>
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get("id"));
+      const events = JSON.parse(localStorage.getItem("events") || "[]");
+      const event = events[id];
+
+      const user_events = JSON.parse(localStorage.getItem('user_events')) || {};
+      const user_info = JSON.parse(sessionStorage.getItem('user_info') || '{}');
+      if (user_events && user_info['email'] && user_events[user_info['email']]) {
+        const joined = user_events[user_info['email']].indexOf(id) > -1;
+        if (joined) {
+          document.querySelector('#joinBtn').innerText = 'Cancel';
+        }
+      }
+      if (event) {
+        document.getElementById("title").textContent = event.title;
+        document.getElementById("time").textContent = `🕒 ${new Date(event.time).toLocaleString()}`;
+        document.getElementById("location").textContent = `📍 ${event.location}`;
+        document.getElementById("description").textContent = event.description;
+        document.getElementById("organizer").textContent = event.organizer;
+        document.getElementById("hobby").textContent = event.hobby;
+      } else {
+        document.getElementById("title").textContent = "Event not found.";
+      }
+    })
+
+
+    function toggleJoin() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get("id"));
+      const user_events = JSON.parse(localStorage.getItem('user_events') || '{}');
+      const user_info = JSON.parse(sessionStorage.getItem('user_info') || '{}');
+      const my_events = user_events[user_info['email']] || [];
+      const email = user_info['email'];
+
+      const index = my_events.indexOf(id);
+      const joined = index > -1;
+      if (joined) {
+        document.querySelector('#joinBtn').innerText = 'Join';
+        my_events.splice(index, 1);
+      } else {
+        document.querySelector('#joinBtn').innerText = 'Cancel';
+        my_events.push(id);
+      }
+      localStorage.setItem("user_events", JSON.stringify({ ...user_events, [email]: my_events }));
     }
   </script>
 </body>
+
 </html>

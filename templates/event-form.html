@@ -5,42 +5,96 @@
   <title>HobbyHive</title>
   <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
   <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
+  <style>
+    header {
+      background-color: #ff9800;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    nav {
+      background-color: #fff3cd;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #ff9900;
+    }
+  </style>
 </head>
 
-<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8;">
+<body style="font-family: Arial, sans-serif; background-color: #f8f8f8;">
+  <header>Hobby Hive</header>
+  <nav>
+    <a href="/">Index</a>
+    <a href="/events">Events</a>
+    <a href="/chats">Chats</a>
+    <a href="/userCenter">Profile</a>
+    <a href="javascript:;" id="sign-out" onclick="handleLogout()">Sign Out</a>
+  </nav>
+  <div style="padding: 20px;">
+    <h2>Create New Event</h2>
 
-  <h2>Create New Event</h2>
+    <!-- creating event -->
 
-  <!-- creating event -->
-
-  <form id="eventForm">
-    <input type="text" placeholder="Event Title" id="title" required
-      style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
-    <input type="text" placeholder="Location" id="location" required
-      style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
-    <input type="datetime-local" id="time" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
-    <input type="text" placeholder="Organizer" id="organizer" required
-      style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
-    <textarea placeholder="Description" id="description" required
-      style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea><br>
-    <button type="submit"
-      style="padding: 10px 20px; background-color: #ffa726; border: none; color: white; border-radius: 6px;">Create
-      Event</button>
-  </form>
+    <form id="eventForm">
+      <input type="text" placeholder="Event Title" id="title" required
+        style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+      <select aria-label="Location" id="location" style="width: 100%; padding: 10px; margin-bottom: 10px;" required>
+        <option selected value="Dublin">Dublin</option>
+      </select>
+      <select class="hobbies" aria-label="Hobby" id="hobby" style="width: 100%; padding: 10px; margin-bottom: 10px;"
+        required>
+        <option value="" selected>Select a Hobby</option>
+      </select>
+      <input type="datetime-local" id="time" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+      <textarea placeholder="Description" id="description" required
+        style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea><br>
+      <button type="submit"
+        style="padding: 10px 20px; background-color: #ffa726; border: none; color: white; border-radius: 6px;">Create
+        Event</button>
+    </form>
+  </div>
 
   <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', path='/app.js') }}"></script>
   <script>
+    window.onload = () => {
+      let hobbies = JSON.parse(localStorage.getItem("hobbies")) || [];
+      let container = document.querySelector('.hobbies');
+      if (hobbies.length > 0) {
+        hobbies.map(v => {
+          let option = document.createElement('option');
+          option.value = v;
+          option.innerText = v;
+          container.appendChild(option);
+        })
+      }
+    }
     document.getElementById("eventForm").onsubmit = function (e) {
       e.preventDefault();
+      let user_info = JSON.parse(sessionStorage.getItem('user_info') || '{}');
       const event = {
         title: document.getElementById("title").value,
         location: document.getElementById("location").value,
         time: document.getElementById("time").value,
-        organizer: document.getElementById("organizer").value,
+        organizer: user_info['email'],
         description: document.getElementById("description").value,
+        hobby: document.getElementById("hobby").value,
       };
       const events = JSON.parse(localStorage.getItem("events") || "[]");
-      events.push(event);
+      events.unshift(event);
       localStorage.setItem("events", JSON.stringify(events));
       window.location.href = "/events";
     };

@@ -43,28 +43,15 @@ def validateFirebaseToken(id_token):
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if not user_token:
-        return RedirectResponse('/login')
-    
-    return templates.TemplateResponse('index.html', { 'request': request, 'user_token': user_token, 'error_message': None })
+    return templates.TemplateResponse('index.html', { 'request': request, 'error_message': None })
 
 @app.get("/login", response_class=HTMLResponse)
 async def login(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if user_token:
-        return RedirectResponse('/')
     return templates.TemplateResponse('sign-in.html', {'request': request, 'error_message': None})
 
 
 @app.get("/signUp", response_class=HTMLResponse)
 async def signUp(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if user_token:
-        return RedirectResponse('/')
     return templates.TemplateResponse('sign-up.html', {'request': request, 'error_message': None})
 
 
@@ -77,19 +64,11 @@ async def root(request: Request):
     return templates.TemplateResponse('forget-password.html', { 'request': request })
 
 @app.get("/updatePassword", response_class=HTMLResponse)
-async def root(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if not user_token:
-        return RedirectResponse('/login')
+async def updatePassword(request: Request):
     return templates.TemplateResponse('update-password.html', { 'request': request })
 
 @app.get("/chats", response_class=HTMLResponse)
 async def root(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if not user_token:
-        return RedirectResponse('/login')
     return templates.TemplateResponse('chats.html', { 'request': request })
 
 @app.get("/chat/{chatId}", response_class=HTMLResponse)
@@ -98,27 +77,14 @@ async def root(request: Request, chatId: str):
 
 @app.get("/userCenter", response_class=HTMLResponse)
 async def userCenter(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if not user_token:
-        return RedirectResponse('/login')
-    user = getUser(user_token).get()
-    return templates.TemplateResponse('user-center.html', { 'request': request, 'user_info': user })
+    return templates.TemplateResponse('user-center.html', { 'request': request })
 
 @app.get("/events", response_class=HTMLResponse)
-async def root(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if not user_token:
-        return RedirectResponse('/login')
+async def events(request: Request):
     return templates.TemplateResponse('events.html', { 'request': request })
 
 @app.get("/createEvent", response_class=HTMLResponse)
-async def root(request: Request):
-    id_token = request.cookies.get("token")
-    user_token = validateFirebaseToken(id_token)
-    if not user_token:
-        return RedirectResponse('/login')
+async def createEvent(request: Request):
     return templates.TemplateResponse('event-form.html', { 'request': request })
 
 @app.get("/updateEvent/{eventId}", response_class=HTMLResponse)
@@ -144,22 +110,10 @@ async def userHobbies(request: Request):
 
 @app.post("/signUp")
 async def signUpPost(request: Request):
-    data = await request.json()
-    try:
-        uid = data["uid"]
-        name = data["name"]
-        profile_name = data["profile_name"]
-        
-        firestore_db.collection('users').document(uid).set({
-            'name': name,
-            'profile_name': profile_name
-        })
-        return {"status": "ok"}
-    except Exception as e:
-        return {"status": "fail"}
+    return None
 
 @app.post("/sign-in", response_class=RedirectResponse)
 async def signInPost(request: Request):
-    return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
+    return None
 
 # <---------------------------------- API End ---------------------------------->

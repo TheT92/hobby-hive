@@ -1,34 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>HobbyHive</title>
     <link type="text/css" href="{{ url_for('static', path='/bootstrap.min.css') }}" rel="stylesheet" />
     <link type="text/css" href="{{ url_for('static', path='/app.css') }}" rel="stylesheet" />
 </head>
-<body style="font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 20px;">
 
-    <h2 style="color: #333; margin-bottom: 20px;">Chats</h2>
+<body>
+    <header>Hobby Hive</header>
+    <nav>
+        <a href="/">Index</a>
+        <a href="/events">Events</a>
+        <a href="/chats">Chats</a>
+        <a href="/userCenter">Profile</a>
+        <a href="javascript:;" id="sign-out" onclick="handleLogout()">Sign Out</a>
+    </nav>
+    <div style="padding:20px;">
+        <h2 style="color: #333; margin-bottom: 20px; text-align: center;">Chats</h2>
 
-    <!-- Chat Group -->
-    <div style="background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-        <a href="/chat/0" style="text-decoration: none; color: #000; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <strong style="font-size: 16px;">ArtStudioGroup</strong><br>
-                <small style="color: gray;">Sarah: Can’t wait for the workshop!</small>
-            </div>
-            <div style="font-size: 12px; color: #999;">10:23 AM</div>
-        </a>
-    </div>
+        <!-- Chat Group -->
+        <div
+            style="background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <a href="/chat/0"
+                style="text-decoration: none; color: #000; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 16px;">ArtStudioGroup</strong><br>
+                    <small style="color: gray;">Sarah: Can’t wait for the workshop!</small>
+                </div>
+                <div style="font-size: 12px; color: #999;">10:23 AM</div>
+            </a>
+        </div>
 
-    <div style="background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-        <a href="/chat/1" style="text-decoration: none; color: #000; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <strong style="font-size: 16px;">Trailblazers_Group</strong><br>
-                <small style="color: gray;">Mike: Hey! Weather looks perfect!</small>
-            </div>
-            <div style="font-size: 12px; color: #999;">Yesterday</div>
-        </a>
+        <div
+            style="background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <a href="/chat/1"
+                style="text-decoration: none; color: #000; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 16px;">Trailblazers_Group</strong><br>
+                    <small style="color: gray;">Mike: Hey! Weather looks perfect!</small>
+                </div>
+                <div style="font-size: 12px; color: #999;">Yesterday</div>
+            </a>
+        </div>
     </div>
     <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/app.js') }}"></script>
 </body>
+
 </html>

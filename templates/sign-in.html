@@ -13,7 +13,7 @@
 <body style="margin: 0; font-family: 'Poppins', sans-serif; background: #f9f9f9;">
 
     <!-- Form Card -->
-    <div
+    <form onsubmit="return onSignIn(event)"
         style="padding: 40px 30px; border-radius: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; background: #fff; margin: 40px auto;">
 
         <h1 style="color: #ff9800; font-size: 28px; margin-bottom: 5px;">Hobby Hive</h1>
@@ -30,7 +30,7 @@
             style="display: block; font-size: 13px; color: #ff9900; margin-bottom: 20px; text-decoration: none;">Forgot
             password?</a>
 
-        <button id="login"
+        <button id="login" type="submit"
             style="width: 100%; background-color: #ff9900; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;">
             Sign In
         </button>
@@ -40,9 +40,35 @@
             <a href="/signUp" style="color: #ff9900; text-decoration: none;">Sign Up</a>
         </p>
 
-    </div>
+    </form>
     <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
-    <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}"></script>
+    <script>
+        window.addEventListener('load', function() {
+            let user_info = JSON.parse(sessionStorage.getItem('user_info') || '{}');
+            if(user_info && user_info['email']) {
+                window.location.href = '/';
+            }
+        })
+        function onSignIn(e) {
+            e.preventDefault();
+            const form = event.target;
+            const email = form.email.value;
+            const password = form.password.value;
+            let users = JSON.parse(localStorage.getItem("users")) || {};
+            if (!users[email]) {
+                alert("Email does not exist!");
+            } else {
+                const user = users[email];
+                if(user['password'] != password) {
+                    alert("Password incorrect!");
+                } else {
+                    sessionStorage.setItem('user_info', JSON.stringify({ ...user }));
+                    window.location.href = '/';
+                }
+            }
+            return false;
+        }
+    </script>
 </body>
 
 </html>

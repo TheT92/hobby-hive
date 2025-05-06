@@ -17,28 +17,52 @@
     <h1 style="color: #ff9800; font-size: 28px; margin-bottom: 5px;">Hobby Hive</h1>
     <p style="font-size: 18px; font-weight: 600; color: #333; margin-top: 0; margin-bottom: 30px;">Create your account
     </p>
+    <form onsubmit="return onSignUp(event)">
+      <input type="text" placeholder="Username" id="name" name="name" required
+        style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px;" />
 
-    <input type="text" placeholder="Username" id="name" name="name" required
-      style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px;" />
+      <input type="email" placeholder="Email" id="email" name="email" required
+        style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px;" />
 
-    <input type="email" placeholder="Email" id="email" name="email" required
-      style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px;" />
+      <input type="password" placeholder="Password" id="password" name="password" required
+        style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px;" />
 
-    <input type="password" placeholder="Password" id="password" name="password" required
-      style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px;" />
-
-    <button id="sign-up"
-      style="width: 100%; background-color: #ff9900; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;">
-      Sign Up
-    </button>
-
+      <button id="sign-up" type="submit"
+        style="width: 100%; background-color: #ff9900; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;">
+        Sign Up
+      </button>
+    </form>
     <p style="margin-top: 20px; font-size: 14px; color: #333;">
       Already have an account?
       <a href="/login" style="color: #ff9900; text-decoration: none;">Sign In</a>
     </p>
   </div>
   <script type="module" src="{{ url_for('static', path='/bootstrap.bundle.min.js') }}"></script>
-  <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}"></script>
+  <script>
+    window.addEventListener('load', function () {
+      let user_info = JSON.parse(sessionStorage.getItem('user_info') || '{}');
+      if (user_info && user_info['email']) {
+        window.location.href = '/';
+      }
+    })
+    function onSignUp(e) {
+      e.preventDefault();
+      const form = event.target;
+      const name = form.name.value;
+      const email = form.email.value;
+      const password = form.password.value;
+      let users = JSON.parse(localStorage.getItem("users")) || {};
+      if (!!users[email]) {
+        alert("User email already exist!");
+      } else {
+        users[email] = { name, email, password };
+        localStorage.setItem('users', JSON.stringify(users));
+        sessionStorage.setItem('user_info', JSON.stringify({ name, email, password }));
+        window.location.href = '/';
+      }
+      return false;
+    }
+  </script>
 </body>
 
 </html>
